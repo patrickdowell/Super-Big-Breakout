@@ -14,14 +14,18 @@ var paddle = SKSpriteNode()
 var brick = SKSpriteNode()
 var loseZone = SKSpriteNode()
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
+        physicsWorld.contactDelegate = self
+        self.physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         createBackground()
         makeBall()
         makePaddle()
         makeBrick()
         makeLoseZone()
+        ball.physicsBody?.isDynamic = true
+        ball.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 5))
     }
 
     func createBackground() {
