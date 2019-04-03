@@ -13,6 +13,8 @@ var ball = SKShapeNode()
 var paddle = SKSpriteNode()
 var brick = SKSpriteNode()
 var loseZone = SKSpriteNode()
+var playingGame = false
+let startLabel = SKLabelNode(fontNamed: "Arial")
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -20,14 +22,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         createBackground()
-        makeBall()
         makePaddle()
         makeBrick()
         makeLoseZone()
+        makeStartLabel()
+    }
+
+    func kickBall() {
         ball.physicsBody?.isDynamic = true
         ball.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 5))
     }
-
+    
     func createBackground() {
         let stars = SKTexture(imageNamed: "stars")
         for i in 0...1 {
@@ -95,11 +100,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         loseZone.physicsBody?.isDynamic = false
         addChild(loseZone)
     }
+    
+    func makeStartLabel() {
+        startLabel.position = CGPoint(x: frame.midX, y: frame.midY)
+        startLabel.alpha = 0.20
+        startLabel.fontColor = SKColor.gray
+        startLabel.text = "Tap to Start"
+        startLabel.fontSize = 60
+        startLabel.name = "startLabel"
+        addChild(startLabel)
+    }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
-            let location = touch.location(in: self)
-            paddle.position.x = location.x
+            if(playingGame) {
+                let location = touch.location(in: self)
+                paddle.position.x = location.x
+            }
+            else {
+                startLabel.alpha = 0
+                makeBall()
+                kickBall()
+                playingGame = true
+            }
         }
     }
     
@@ -123,5 +146,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             ball.removeFromParent()
         }
     } 
-    
+ 
 }
