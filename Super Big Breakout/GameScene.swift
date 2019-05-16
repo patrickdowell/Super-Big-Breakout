@@ -79,7 +79,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // does not slow down over time
         ball.physicsBody?.linearDamping = 0
         ball.physicsBody?.contactTestBitMask = (ball.physicsBody?.collisionBitMask)!
-        
         addChild(ball) // add ball object to the view
     }
     
@@ -91,11 +90,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         paddle.physicsBody?.isDynamic = false
         addChild(paddle)
     }
-    
+
     func makeBrickRow1() {
         var tracker = 0
         for x in 0...6 {
-            var temp = CGFloat(x)
+            let temp = CGFloat(x)
             var locationX = frame.minX + 25 + 60 * temp
             var locationY = frame.maxY - 50
             brick = SKSpriteNode(color: UIColor.blue, size: CGSize(width: 50, height: 20))
@@ -108,7 +107,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             tracker += 1
         }
     }
-    
+
     func makeBrickRow2() {
         var tracker = 8
         for x in 0...6 {
